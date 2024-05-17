@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+    </head>
+    <style>
+        body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    background-image: url('background.jpg'); /* Replace 'background.jpg' with your image file path */
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  form {
+    max-width: 400px;
+    background: rgba(255, 255, 255, 0.8); /* Semi-transparent background */
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  input[type="text"], input[type="password"], input[type="email"] {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+  input[type="submit"] {
+    width: 100%;
+    background-color: #4CAF50;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  input[type="submit"]:hover {
+    background-color: #45a049;
+  }
+
+  
+    </style>
+    <body>
+        
+        <form action="/action_page.php">
+                <h1>Register</h1>
+                <p>Please fill in this form to create an account.</p>
+                <!-- <hr> -->
+                <form  action="#"  method="post">
+                <label for="fname"><b>Username</b></label>
+                <input type="text" placeholder="Enter Username" name="name" class="fname" >
+                <p id="fnameerror"></p>
+
+                <label for="email"><b>Email</b></label>
+                <input type="text" placeholder="Enter Email" name="email" class="email" >
+                <p id="emailerror"></p>
+
+                <label for="psw"><b>Password</b></label>
+                <input type="password" placeholder="Enter Password" name="psw" class="psw" >
+                <p id="passworderror"></p>
+                <hr>
+                <input type="submit" id = "userregister" value="Register" class="registerbtn">
+                </form>
+        </form>
+        <script>
+
+let usernameInput = document.querySelector(".fname");
+usernameInput.addEventListener("input", function() {
+    document.getElementById("fnameerror").innerHTML = ""; 
+});
+
+let emailInput = document.querySelector(".email");
+emailInput.addEventListener("input", function() {
+    document.getElementById("emailerror").innerHTML = ""; 
+});
+
+let passwordInput = document.querySelector(".psw");
+passwordInput.addEventListener("input", function() {
+    document.getElementById("passworderror").innerHTML = ""; 
+});
+
+let form = document.querySelector("form");
+form.addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    let nameregex = /^[A-Za-z]+$/;
+    let username = usernameInput.value.trim();
+    if (usernameInput.value.length === 0) {
+        document.getElementById("fnameerror").innerHTML = "Username field is required";
+        document.getElementById("fnameerror").style.color = "red";
+        return; 
+    } else if (usernameInput.value >= 10) {
+        documee.nt.getElementById("fnameerror").innerHTML = "Maximum 10 character of Username";
+        document.getElementById("fnameerror").stylcolor = "red";
+        return; 
+    }
+    else if(usernameInput.value != username)
+    {
+        document.getElementById("fnameerror").innerHTML = "Username space is not available";
+        document.getElementById("fnameerror").stylcolor = "red";
+        return; 
+    }
+
+    let emailregex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+    let email = emailInput.value;
+    if (email.length === 0) {
+        document.getElementById("emailerror").innerHTML = "Email field is required";
+        document.getElementById("emailerror").style.color = "red";
+        return; 
+    } else if (!emailregex.test(email)) {
+        document.getElementById("emailerror").innerHTML = "Email is not valid";
+        document.getElementById("emailerror").style.color = "red";
+        return; 
+    }
+
+    let passwordregex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@.#$!%*?&])[A-Za-z\d@.#$!%*?&]{8,15}$/;
+    let password = passwordInput.value;
+    if (password.length === 0) {
+        document.getElementById("passworderror").innerHTML = "Password field is required";
+        document.getElementById("passworderror").style.color = "red";
+        return; 
+    } else if (!passwordregex.test(password)) {
+        document.getElementById("passworderror").innerHTML = "Password is invalid";
+        document.getElementById("passworderror").style.color = "red";
+        return;
+    }
+
+    registerUser();
+});
+
+
+
+function registerUser() {
+    let username = document.querySelector(".fname").value;
+    let email = document.querySelector(".email").value;
+    let password = document.querySelector(".psw").value;
+    let encodedPassword = window.btoa(password);
+
+    if (!username || !email || !password) {
+        alert("All fields are required.");
+        return; 
+    }
+
+    let userData = {
+        Username: username,
+        Email: email,
+        Password: encodedPassword,
+    };
+
+    let users = JSON.parse(localStorage.getItem('Users')) || [];
+    users.push(userData);
+
+    localStorage.setItem('Users', JSON.stringify(users));
+
+    document.querySelector(".fname").value = "";
+    document.querySelector(".email").value = "";
+    document.querySelector(".psw").value = "";
+
+    console.log('User registered successfully.');
+
+    window.location.href = "login.html";
+}
+
+
+// function validateInputs() {
+//     let username = document.querySelector(".fname").value;
+//     let email = document.querySelector(".email").value;
+//     let password = document.querySelector(".psw").value;
+//     let nameregex = /^[A-Za-z]+$/;
+//     let emailregex = /^[a-z0-9]+@[a-z]+\.[a-z]{2,3}$/;
+//     let passwordregex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@.#$!%*?&])[A-Za-z\d@.#$!%*?&]{8,15}$/;
+
+// if(username.type === "text"){
+//     if (username.length === 0) {
+//         document.getElementById("fnameerror").innerHTML = "Username field is required";
+//     }
+//     else if (!nameregex.test(username)) {
+//         document.getElementById("fnameerror").innerHTML = "Username should contain only letters";
+//         document.getElementById("fnameerror").style.color = "red";
+//     } else {
+//         document.getElementById("fnameerror").innerHTML = "";
+//     }
+// }
+// // else if()
+//     if (!emailregex.test(email)) {
+//         document.getElementById("emailerror").innerHTML = "Email is not valid";
+//     } else {
+//         document.getElementById("emailerror").innerHTML = "";
+//     }
+
+//     if (!passwordregex.test(password)) {
+//         document.getElementById("passworderror").innerHTML = "Password is invalid";
+//     } else {
+//         document.getElementById("passworderror").innerHTML = "";
+//     }
+//     // registerUser(e);
+//     return true;
+// }
+
+// document.getElementById('userregister').addEventListener("click", registerUser);
+
+
+
+
+
+
+            //   x.value.toUpperCase()
+
+
+
+
+
+            // localStorage.setItem("name", "John Cena");
+            // localStorage.setItem("age", 45);
+            // localStorage.setItem("class", "ABC");
+            // localStorage.removeItem("address");
+            // localStorage.setItem("Country", "America");
+
+            // let array = {};
+            // for (let i = 0; i < localStorage.length; i++) {
+            //     var key = localStorage.key(i);
+            //     array[key] = localStorage.getItem(key);
+            // } 
+            // let a = JSON.stringify(array);
+            // let b = JSON.parse(a)
+            // document.getElementById('demo').innerHTML = b.name + ", " + b.age + ", " + b.Country + ", " + b.class;
+    
+    
+            // console.log(array);
+            // window.onload = function () {
+            // if (typeof (Storage) !== "undefined") {
+            // localStorage.clear();
+            // document.getElementById('contactForm').addEventListener('submit', function () {
+            //     var name = document.getElementById('name').value;
+            //     let encoded = window.btoa(name)
+            //     localStorage.setItem('name',encoded);
+            //     document.write(window.atob(encoded))
+            // alert("Form Submitted Successfully");
+            //         });
+            //     } else {
+            //         alert("Sorry, your browser does not support web storage. Form data won't be saved.");
+            //     }
+            // }
+            // var abc = document.getElementById('password').value
+            // localStorage.clear();
+            // localStorage.setItem("name", "John Cena");
+            // localStorage.setItem("age", 45);
+            // localStorage.setItem("class", "ABC");
+            // localStorage.removeItem("address");
+            // localStorage.setItem("Country", "America");
+            // JSON.parse()
+            //    var a=  localStorage.key(1);
+            // document.write(a)
+    
+            // try {
+            //     afttlert("Welcome guest!");
+            // }
+            // catch (err) {
+            //     document.getElementById("demo").innerHTML = err.name;
+            // }
+    
+            // var aNumber = !!localStorage.getItem('number') ? JSON.parse(localStorage.getItem('number')) : [];
+            // var number = document.getElementById('number').value;
+            // aNumber.push(number);
+            // localStorage.setItem('number', JSON.stringify(aNumber));
+        </script>
+    </body>
+
+    </html>
+  

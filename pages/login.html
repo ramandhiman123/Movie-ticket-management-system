@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="styleheet" href="/asset/css/loginandsignup.css">
+</head>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        background-image: url('background.jpg');
+        /* Replace 'background.jpg' with your image file path */
+        background-size: cover;
+        background-position: center;
+        height: 100vh;
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    form {
+        max-width: 400px;
+        background: rgba(255, 255, 255, 0.8);
+        /* Semi-transparent background */
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    input[type="text"],
+    input[type="password"],
+    input[type="email"] {
+        width: 100%;
+        padding: 10px;
+        margin: 8px 0;
+        display: inline-block;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+
+    input[type="submit"] {
+        width: 100%;
+        background-color: #4CAF50;
+        color: white;
+        padding: 14px 20px;
+        margin: 8px 0;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    input[type="submit"]:hover {
+        background-color: #45a049;
+    }
+
+    h2 {
+        text-align: center;
+    }
+</style>
+
+<body>
+    <form method="post">
+        <h2>Login</h2>
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" class="userloginemail">
+        <p id="emailerror1"></p>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" class="userloginpsw">
+        <p id="passworderror1"></p>
+        <input type="submit" >
+    </form>
+    <script>
+        let emailInput = document.querySelector(".userloginemail");
+        emailInput.addEventListener("input", function () {
+            document.getElementById("emailerror1").innerHTML = "";
+        });
+
+        let passwordInput = document.querySelector(".userloginpsw");
+        passwordInput.addEventListener("input", function () {
+            document.getElementById("passworderror1").innerHTML = "";
+        });
+
+        let form = document.querySelector("form");
+        form.addEventListener("submit", function (event) {
+                event.preventDefault();
+            // function loginvalidtion() {
+            let email = emailInput.value.trim();
+            if (emailInput.value.length === 0) {
+                document.getElementById("emailerror1").innerHTML = "Email field is required";
+                document.getElementById("emailerror1").style.color = "red";
+                return;
+            } else if (emailInput.value != email) {
+                documee.nt.getElementById("emailerror1").innerHTML = "Space is not valid";
+                document.getElementById("emailerror1").stylcolor = "red";
+                return;
+            } else if (passwordInput.value.length === 0) {
+                document.getElementById("passworderror1").innerHTML = "Password field is required";
+                document.getElementById("passworderror1").style.color = "red";
+                return;
+            } else if (!passwordInput.value.trim()) {
+                document.getElementById("passworderror1").innerHTML = "Password field is not valid for space";
+                document.getElementById("passworderror1").style.color = "red";
+
+                return;
+            }
+
+            loginUser();
+
+        });
+
+        function loginUser() {
+            let userLoginEmail = document.querySelector(".userloginemail").value;
+            let userLoginPassword = document.querySelector(".userloginpsw").value;
+            let encodedPassword = window.btoa(userLoginPassword);
+
+            let allData = JSON.parse(localStorage.getItem("Users"));
+            var sessionToken = Math.random().toString(36).substr(2);
+
+            allData.forEach(user => {
+                if (user.Email === userLoginEmail && user.Password === encodedPassword) {
+                    sessionStorage.setItem("LoggedInUser", JSON.stringify({ Username: userLoginEmail, UserPassword: encodedPassword, _token: sessionToken }));
+                    window.location.href = "homepage.html";
+                }
+            })
+        }
+
+
+
+    </script>
+</body>
+
+</html>

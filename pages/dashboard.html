@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard</title>
+</head>
+
+<body>
+  <h1>welcome :-
+    <span id="loggedusername"></span>
+  </h1>
+  <button type="submit" class="logoutbtn">Logout</button>
+  <script>
+    let loggedInUser = JSON.parse(localStorage.getItem("Users"));
+
+    let isLoggedIn = false;
+    loggedInUser.forEach(element => {
+      if (element.Status === 'LoggedIn') {
+        isLoggedIn = true;
+        document.getElementById("loggedusername").innerHTML = element.Username;
+      }
+    });
+
+    if (!isLoggedIn) {
+      window.location.href = "login.html";
+    }
+
+    document.querySelector(".logoutbtn").addEventListener("click", function () {
+      loggedInUser.forEach(items => {
+        items.Status = 'UserRegistered';
+      });
+      localStorage.setItem("Users", JSON.stringify(loggedInUser));
+      window.location.href = "login.html";
+    });
+
+  </script>
+</body>
+
+</html>
